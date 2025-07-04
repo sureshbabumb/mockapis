@@ -2,7 +2,7 @@
   "name": "mockoon-api",
   "version": "1.0.0",
   "scripts": {
-    "start": "mockoon-cli start --data ./mockoon-environment.json --port 3000"
+    "start": "mockoon-cli start --data ./environment.json --port 3000"
   },
   "dependencies": {
     "@mockoon/cli": "^8.0.0"
