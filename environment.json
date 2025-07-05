@@ -1,27 +1,32 @@
 {
-  "uuid": "35fe4f02-2878-450a-af1a-92c3fdae9723",
+  "uuid": "af8a6f2e-0202-4a05-9bf7-85bd6e257143",
   "lastMigration": 33,
-  "name": "UserDetails (copy)",
+  "name": "Orchestration Task API",
   "endpointPrefix": "",
   "latency": 0,
-  "port": 3003,
+  "port": 3000,
   "hostname": "",
   "folders": [],
   "routes": [
     {
-      "uuid": "89c3ffc2-d614-4ac1-aa2c-4d0130318f9f",
+      "uuid": "d4625431-6be2-48db-8e8f-efc0adc36e56",
       "type": "http",
-      "documentation": "",
+      "documentation": "Get all orchestration tasks items",
       "method": "get",
-      "endpoint": "user",
+      "endpoint": "tasks",
       "responses": [
         {
-          "uuid": "2d38930a-29b8-42df-b5e4-f5429f831bfb",
-          "body": "{ \n  \"id\" : 001,\n  \"name\" : \"User1\"\n}",
+          "uuid": "8089005e-9bdb-45c6-bf23-3e32fe6fd91a",
+          "body": "[\n  {{#repeat 5 20}}\n  {\n    \"id\": {{faker 'number.int' max=99999}},\n    \"owner\": \"{{faker 'person.firstName'}}\",\n    \"name\": \"{{faker 'helpers.arrayElement' (array 'Create Department code' 'Create reseller ID' 'Create sales channel code' 'Create SubClass ID' 'Create Operator ID' 'Create Dealer code' 'Configure CAMEL keys')}}\",\n    \"description\": \"{{faker 'helpers.arrayElement' (array 'Create Department code' 'Create reseller ID' 'Create sales channel code' 'Create SubClass ID' 'Create Operator ID' 'Create Dealer code' 'Configure CAMEL keys')}} Description\",\n    \"status\": \"{{faker 'helpers.arrayElement' (array 'Completed' 'Resolution Required' 'In Progress' 'Awaiting completion' 'Pending')}}\",\n    \"subStatus\": \"{{faker 'helpers.arrayElement' (array 'Requirements Defined' 'Assigned' 'Developing' 'Awaiting Approval' 'In QA' 'Blocked' 'Deployed')}}\",\n    \"isEscalated\": {{faker 'datatype.boolean'}},\n    \"milestone\": \"{{faker 'helpers.arrayElement' (array 'Pre-Config' 'Rate Pan' 'Connectivity' 'Testing' 'Contracts' 'Live')}}\",\n    \"assignedTo\": \"{{faker 'person.firstName'}}\",\n    \"dueDate\": \"{{faker 'date.recent' 365}}\",\n    \"updatedDate\": \"{{faker 'date.recent' 365}}\",\n    \"updatedBy\": \"{{faker 'person.firstName'}}\",\n    \"createdDate\": \"{{faker 'date.recent' 365}}\",\n    \"createdBy\": \"{{faker 'person.firstName'}}\"\n  }\n  {{/repeat}}\n]",
           "latency": 0,
           "statusCode": 200,
-          "label": "",
-          "headers": [],
+          "label": "A list of orchestration tasks items",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
           "bodyType": "INLINE",
           "filePath": "",
           "databucketID": "",
@@ -40,19 +45,24 @@
       "streamingInterval": 0
     },
     {
-      "uuid": "8f2348c0-8a1a-4725-9056-0499af7f1e6f",
+      "uuid": "42b2d00e-7779-4f20-9c42-1add9ad959d2",
       "type": "http",
-      "documentation": "",
+      "documentation": "Get a specific orchestration tasks item by ID",
       "method": "get",
-      "endpoint": "userRandom",
+      "endpoint": "tasks/:id",
       "responses": [
         {
-          "uuid": "3624ce0f-785c-49ab-9c04-840b92c2b521",
-          "body": "{\n  \"userId\": \"{{ faker 'number.int' min=10000 max=100000 }}\",\n  \"firstname\": \"{{ faker 'person.firstName' }}\",\n  \"lastname\": \"{{ faker 'person.lastName' }}\"\n}",
+          "uuid": "55309b87-9118-4b2c-a1a9-693592c626f4",
+          "body": "{\n  \"id\": {{{urlParam 'id'}}},\n  \"owner\": \"{{faker 'person.firstName'}}\",\n  \"name\": \"{{faker 'helpers.arrayElement' (array 'Create Department code' 'Create reseller ID' 'Create sales channel code' 'Create SubClass ID' 'Create Operator ID' 'Create Dealer code' 'Configure CAMEL keys')}}\",\n  \"description\": \"{{faker 'helpers.arrayElement' (array 'Create Department code' 'Create reseller ID' 'Create sales channel code' 'Create SubClass ID' 'Create Operator ID' 'Create Dealer code' 'Configure CAMEL keys')}} Description\",\n  \"status\": \"{{faker 'helpers.arrayElement' (array 'Completed' 'Resolution Required' 'In Progress' 'Awaiting completion' 'Pending')}}\",\n    \"subStatus\": \"{{faker 'helpers.arrayElement' (array 'Requirements Defined' 'Assigned' 'Developing' 'Awaiting Approval' 'In QA' 'Blocked' 'Deployed')}}\",\n  \"isEscalated\": {{faker 'datatype.boolean'}},\n  \"milestone\": \"{{faker 'helpers.arrayElement' (array 'Pre-Config' 'Rate Pan' 'Connectivity' 'Testing' 'Contracts' 'Live')}}\",\n  \"assignedTo\": \"{{faker 'person.firstName'}}\",\n  \"dueDate\": \"{{faker 'date.recent' 365}}\",\n  \"updatedDate\": \"{{faker 'date.recent' 365}}\",\n  \"updatedBy\": \"{{faker 'person.firstName'}}\",\n  \"createdDate\": \"{{faker 'date.recent' 365}}\",\n  \"createdBy\": \"{{faker 'person.firstName'}}\"\n}",
           "latency": 0,
           "statusCode": 200,
-          "label": "",
-          "headers": [],
+          "label": "The orchestration tasks item",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
           "bodyType": "INLINE",
           "filePath": "",
           "databucketID": "",
@@ -64,6 +74,30 @@
           "default": true,
           "crudKey": "id",
           "callbacks": []
+        },
+        {
+          "uuid": "6be3d8ea-4c02-4784-bce4-8c56db2c83c2",
+          "body": "",
+          "latency": 0,
+          "statusCode": 404,
+          "label": "orchestration tasks item not found",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
         }
       ],
       "responseMode": null,
@@ -71,19 +105,84 @@
       "streamingInterval": 0
     },
     {
-      "uuid": "87f1f4e4-7bf6-4af5-bbb8-252febf5abae",
+      "uuid": "e7fd1eb4-f4ed-4e06-9b45-7e45df088e91",
       "type": "http",
-      "documentation": "",
+      "documentation": "Update fields of an orchestration tasks item by ID",
+      "method": "patch",
+      "endpoint": "tasks/:id",
+      "responses": [
+        {
+          "uuid": "092f3d39-803a-491d-82c6-a88914ab6ac6",
+          "body": "{\n  \"id\": {{{urlParam 'id'}}},\n  \"owner\": \"{{faker 'person.firstName'}}\",\n  \"name\": \"{{faker 'helpers.arrayElement' (array 'Create Department code' 'Create reseller ID' 'Create sales channel code' 'Create SubClass ID' 'Create Operator ID' 'Create Dealer code' 'Configure CAMEL keys')}}\",\n  \"description\": \"{{faker 'helpers.arrayElement' (array 'Create Department code' 'Create reseller ID' 'Create sales channel code' 'Create SubClass ID' 'Create Operator ID' 'Create Dealer code' 'Configure CAMEL keys')}} Description\",\n  \"status\": \"{{faker 'helpers.arrayElement' (array 'Completed' 'Resolution Required' 'In Progress' 'Awaiting completion' 'Pending')}}\",\n  \"subStatus\": \"{{faker 'helpers.arrayElement' (array 'Requirements Defined' 'Assigned' 'Developing' 'Awaiting Approval' 'In QA' 'Blocked' 'Deployed')}}\",\n  \"isEscalated\": {{faker 'datatype.boolean'}},\n  \"milestone\": \"{{faker 'helpers.arrayElement' (array 'Pre-Config' 'Rate Pan' 'Connectivity' 'Testing' 'Contracts' 'Live')}}\",\n  \"assignedTo\": \"{{faker 'person.firstName'}}\",\n  \"dueDate\": \"{{faker 'date.recent' 365}}\",\n  \"updatedDate\": \"{{faker 'date.recent' 365}}\",\n  \"updatedBy\": \"{{faker 'person.firstName'}}\",\n  \"createdDate\": \"{{faker 'date.recent' 365}}\",\n  \"createdBy\": \"{{faker 'person.firstName'}}\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "orchestration tasks item updated successfully",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "ddd910d0-f5a1-460a-a19a-a18c373a4632",
+          "body": "",
+          "latency": 0,
+          "statusCode": 404,
+          "label": "orchestration tasks item not found",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    },
+    {
+      "uuid": "e6b96779-348f-4ca9-a385-3c0ff5ddea69",
+      "type": "http",
+      "documentation": "Get all Orchestration Task Comments",
       "method": "get",
-      "endpoint": "getAllUsers",
+      "endpoint": "task/:id/comments",
       "responses": [
         {
-          "uuid": "625d53cf-cb25-4a0f-800c-e97ec526d2e1",
-          "body": "[\n  {{# repeat (queryParam 'total' '10') }}\n  {\n        \"userId\": \"{{ faker 'number.int' min=10000 max=100000 }}\",\n        \"firstname\": \"{{ faker 'person.firstName' }}\",\n        \"lastname\": \"{{ faker 'person.lastName' }}\"\n  }\n  {{/ repeat }}\n]",
+          "uuid": "22a685da-bac1-41d9-9a19-0bc5718427af",
+          "body": "[\n  {{#repeat 2 10}}\n  {\n    \"id\": {{faker 'number.int' max=99999}},\n    \"title\": \"{{oneOf (array 'Contract review' 'VAT compliance' 'ZTAR account status' 'MVNA onboarding checklist' 'PEAK data eligibility' 'Entity verification' 'Registration update')}}\",\n    \"comment\": \"{{oneOf (array 'Pending legal teams confirmation if current MVNA contracts under ZTAR are valid for PEAK Data onboarding.' 'Awaiting response from finance team (Sashidhar/John) regarding VAT registration eligibility under ZTAR for PEAK Data.' 'Need confirmation from John/Sashidhar if ZTAR account setup meets PEAKs MVNA qualification criteria.' 'Review pending with Sashidhar on whether all onboarding items, including tax documents under ZTAR, are complete for PEAK.' 'Awaiting validation from John if current ZTAR setup fulfills the PEAK Data compliance requirements.' 'Pending internal confirmation from Sashidhar on whether ZTAR qualifies as a valid entity for PEAK as MVNA.' 'Follow-up required with John/Sashidhar to confirm if latest TAX registrations under ZTAR are aligned with PEAK onboarding needs')}}\",\n    \"status\": \"{{faker 'helpers.arrayElement' (array 'Completed' 'Resolution Required' 'In Progress' 'Awaiting completion' 'Pending')}}\",\n    \"updatedDate\": \"{{faker 'date.recent' 365}}\",\n    \"updatedBy\": \"{{faker 'person.firstName'}}\",\n    \"createdDate\": \"{{faker 'date.recent' 365}}\",\n    \"createdBy\": \"{{faker 'person.firstName'}}\"\n  }\n  {{/repeat}}\n]",
           "latency": 0,
           "statusCode": 200,
-          "label": "",
-          "headers": [],
+          "label": "A list of Orchestration Task Comments",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
           "bodyType": "INLINE",
           "filePath": "",
           "databucketID": "",
@@ -102,19 +201,24 @@
       "streamingInterval": 0
     },
     {
-      "uuid": "1da3b9f2-d40d-49ea-8d02-62e3e72a8eea",
+      "uuid": "339e0b19-863c-47b4-a4dc-a06eb9a0b93b",
       "type": "http",
-      "documentation": "",
+      "documentation": "Create a new Orchestration Task Comment",
       "method": "post",
-      "endpoint": "addUser",
+      "endpoint": "task/:id/comments",
       "responses": [
         {
-          "uuid": "177dde17-7d3c-49b1-9edb-de8f872a8ffd",
-          "body": "{\n  \"id\": \"{{faker 'number.int' min=0 max=100}}\",\n  \"username\":  \"{{body 'username'}}\"\n}",
+          "uuid": "e39e3777-c73f-449e-8fab-dc8c481cdffc",
+          "body": "{\n    \"id\": {{faker 'number.int' max=99999}},\n    \"title\": \"{{oneOf (array 'Contract review' 'VAT compliance' 'ZTAR account status' 'MVNA onboarding checklist' 'PEAK data eligibility' 'Entity verification' 'Registration update')}}\",\n    \"comment\": \"{{oneOf (array 'Pending legal teams confirmation if current MVNA contracts under ZTAR are valid for PEAK Data onboarding.' 'Awaiting response from finance team (Sashidhar/John) regarding VAT registration eligibility under ZTAR for PEAK Data.' 'Need confirmation from John/Sashidhar if ZTAR account setup meets PEAKs MVNA qualification criteria.' 'Review pending with Sashidhar on whether all onboarding items, including tax documents under ZTAR, are complete for PEAK.' 'Awaiting validation from John if current ZTAR setup fulfills the PEAK Data compliance requirements.' 'Pending internal confirmation from Sashidhar on whether ZTAR qualifies as a valid entity for PEAK as MVNA.' 'Follow-up required with John/Sashidhar to confirm if latest TAX registrations under ZTAR are aligned with PEAK onboarding needs')}}\",\n    \"status\": \"{{faker 'helpers.arrayElement' (array 'Completed' 'Resolution Required' 'In Progress' 'Awaiting completion' 'Pending')}}\",\n    \"updatedDate\": \"{{faker 'date.recent' 365}}\",\n    \"updatedBy\": \"{{faker 'person.firstName'}}\",\n    \"createdDate\": \"{{faker 'date.recent' 365}}\",\n    \"createdBy\": \"{{faker 'person.firstName'}}\"\n}",
           "latency": 0,
-          "statusCode": 200,
-          "label": "",
-          "headers": [],
+          "statusCode": 201,
+          "label": "Orchestration Task Comment created successfully",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
           "bodyType": "INLINE",
           "filePath": "",
           "databucketID": "",
@@ -133,302 +237,28 @@
       "streamingInterval": 0
     },
     {
-      "uuid": "26b90140-bcef-4bee-a116-c377c5757e0a",
+      "uuid": "2f76c0a4-6896-4c3c-b81e-1626c39659c9",
       "type": "http",
-      "documentation": "",
-      "method": "post",
-      "endpoint": "addUserByUserName",
-      "responses": [
-        {
-          "uuid": "b485c1fc-f451-4c44-b22b-03f40fe9142b",
-          "body": "{\n  \"status\" : \"success\",\n  \"id\": \"{{faker 'number.int' min=0 max=100}}\",\n  \"username\":  \"Mr.{{body 'username'}}\"\n}",
-          "latency": 0,
-          "statusCode": 200,
-          "label": "",
-          "headers": [],
-          "bodyType": "INLINE",
-          "filePath": "",
-          "databucketID": "",
-          "sendFileAsBody": false,
-          "rules": [
-            {
-              "target": "body",
-              "modifier": "username",
-              "value": "",
-              "invert": true,
-              "operator": "null"
-            }
-          ],
-          "rulesOperator": "OR",
-          "disableTemplating": false,
-          "fallbackTo404": false,
-          "default": true,
-          "crudKey": "id",
-          "callbacks": []
-        },
-        {
-          "uuid": "3415e13d-688f-4026-8d68-717510d8ca33",
-          "body": "{\n  \"status\": \"failed\",\n  \"reason\": \"username is mandatory\"\n}",
-          "latency": 0,
-          "statusCode": 400,
-          "label": "",
-          "headers": [],
-          "bodyType": "INLINE",
-          "filePath": "",
-          "databucketID": "",
-          "sendFileAsBody": false,
-          "rules": [
-            {
-              "target": "body",
-              "modifier": "username",
-              "value": "",
-              "invert": false,
-              "operator": "null"
-            }
-          ],
-          "rulesOperator": "OR",
-          "disableTemplating": false,
-          "fallbackTo404": false,
-          "default": false,
-          "crudKey": "id",
-          "callbacks": []
-        }
-      ],
-      "responseMode": null,
-      "streamingMode": null,
-      "streamingInterval": 0
-    },
-    {
-      "uuid": "db28285c-de87-45aa-934a-0047d068e3a8",
-      "type": "http",
-      "documentation": "",
-      "method": "post",
-      "endpoint": "authorizeUser",
-      "responses": [
-        {
-          "uuid": "fc49b585-c184-4d8b-818f-734372a75439",
-          "body": "{\n  \"code\" : \"3001\",\n  \"message\" : \"Missing username and uuid\"\n}",
-          "latency": 0,
-          "statusCode": 401,
-          "label": "",
-          "headers": [],
-          "bodyType": "INLINE",
-          "filePath": "",
-          "databucketID": "",
-          "sendFileAsBody": false,
-          "rules": [
-            {
-              "target": "body",
-              "modifier": "username",
-              "value": "",
-              "invert": false,
-              "operator": "null"
-            },
-            {
-              "target": "header",
-              "modifier": "uuid",
-              "value": "",
-              "invert": false,
-              "operator": "null"
-            }
-          ],
-          "rulesOperator": "AND",
-          "disableTemplating": false,
-          "fallbackTo404": false,
-          "default": true,
-          "crudKey": "id",
-          "callbacks": []
-        },
-        {
-          "uuid": "9d6c3763-ae9e-4aa0-9558-766d02beb886",
-          "body": "{\n  \"code\" : \"3002\",\n  \"message\" : \"Missing username\"\n}",
-          "latency": 0,
-          "statusCode": 400,
-          "label": "",
-          "headers": [],
-          "bodyType": "INLINE",
-          "filePath": "",
-          "databucketID": "",
-          "sendFileAsBody": false,
-          "rules": [
-            {
-              "target": "header",
-              "modifier": "uuid",
-              "value": "4c6c6af2-9db7-4ff2-9f69-3e3423ecfc3f",
-              "invert": true,
-              "operator": "null"
-            },
-            {
-              "target": "body",
-              "modifier": "username",
-              "value": "",
-              "invert": false,
-              "operator": "null"
-            }
-          ],
-          "rulesOperator": "AND",
-          "disableTemplating": false,
-          "fallbackTo404": false,
-          "default": false,
-          "crudKey": "id",
-          "callbacks": []
-        },
-        {
-          "uuid": "42721790-99f3-43a4-8ae1-f11176f80bba",
-          "body": "{\n  \"code\" : \"3003\",\n  \"message\" : \"Missing uuid\"\n}",
-          "latency": 0,
-          "statusCode": 401,
-          "label": "",
-          "headers": [],
-          "bodyType": "INLINE",
-          "filePath": "",
-          "databucketID": "",
-          "sendFileAsBody": false,
-          "rules": [
-            {
-              "target": "body",
-              "modifier": "username",
-              "value": "",
-              "invert": true,
-              "operator": "null"
-            },
-            {
-              "target": "header",
-              "modifier": "uuid",
-              "value": "",
-              "invert": false,
-              "operator": "null"
-            }
-          ],
-          "rulesOperator": "AND",
-          "disableTemplating": false,
-          "fallbackTo404": false,
-          "default": false,
-          "crudKey": "id",
-          "callbacks": []
-        },
-        {
-          "uuid": "ca0a2f98-3309-4774-8fa8-92edcbb392bb",
-          "body": "{\n  \"code\" : \"3004\",\n  \"message\" : \"Invalid username or uuid\"\n}\n",
-          "latency": 0,
-          "statusCode": 401,
-          "label": "",
-          "headers": [],
-          "bodyType": "INLINE",
-          "filePath": "",
-          "databucketID": "",
-          "sendFileAsBody": false,
-          "rules": [
-            {
-              "target": "body",
-              "modifier": "username",
-              "value": "Suresh",
-              "invert": true,
-              "operator": "equals"
-            },
-            {
-              "target": "header",
-              "modifier": "uuid",
-              "value": "4c6c6af2-9db7-4ff2-9f69-3e3423ecfc3f",
-              "invert": true,
-              "operator": "equals"
-            }
-          ],
-          "rulesOperator": "OR",
-          "disableTemplating": false,
-          "fallbackTo404": false,
-          "default": false,
-          "crudKey": "id",
-          "callbacks": []
-        },
-        {
-          "uuid": "f8f9d822-78cd-48b8-8891-1a943f2710f0",
-          "body": "{\n  \"code\" : \"200\",\n  \"message\" : \"User Validated Successfully\"\n}",
-          "latency": 0,
-          "statusCode": 200,
-          "label": "",
-          "headers": [],
-          "bodyType": "INLINE",
-          "filePath": "",
-          "databucketID": "",
-          "sendFileAsBody": false,
-          "rules": [
-            {
-              "target": "body",
-              "modifier": "username",
-              "value": "Suresh",
-              "invert": false,
-              "operator": "equals"
-            },
-            {
-              "target": "header",
-              "modifier": "uuid",
-              "value": "4c6c6af2-9db7-4ff2-9f69-3e3423ecfc3f",
-              "invert": false,
-              "operator": "equals"
-            }
-          ],
-          "rulesOperator": "AND",
-          "disableTemplating": false,
-          "fallbackTo404": false,
-          "default": false,
-          "crudKey": "id",
-          "callbacks": []
-        }
-      ],
-      "responseMode": null,
-      "streamingMode": null,
-      "streamingInterval": 0
-    },
-    {
-      "uuid": "8c458e31-3785-4be9-8c6a-9f0d4a110c43",
-      "type": "http",
-      "documentation": "",
-      "method": "post",
-      "endpoint": "userStatus",
-      "responses": [
-        {
-          "uuid": "3871621a-4367-43f5-8559-1d60f8b1ce3e",
-          "body": "{\r\n  \"status\": \"{{faker 'helpers.arrayElement' (array 'active' 'inactive' 'banned' 'pending_verification' 'verified' 'blocked' 'deactivated')}}\"\r\n}",
-          "latency": 0,
-          "statusCode": 200,
-          "label": "",
-          "headers": [],
-          "bodyType": "INLINE",
-          "filePath": "",
-          "databucketID": "",
-          "sendFileAsBody": false,
-          "rules": [],
-          "rulesOperator": "OR",
-          "disableTemplating": false,
-          "fallbackTo404": false,
-          "default": true,
-          "crudKey": "id",
-          "callbacks": []
-        }
-      ],
-      "responseMode": null,
-      "streamingMode": null,
-      "streamingInterval": 0
-    },
-    {
-      "uuid": "1b5ac7ee-72a8-46fc-b544-bb537fa6f32b",
-      "type": "ws",
-      "documentation": "",
+      "documentation": "Get a specific Orchestration Task Comment by ID",
       "method": "get",
-      "endpoint": "getRandomUsers",
+      "endpoint": "task/comments/:id",
       "responses": [
         {
-          "uuid": "3c7c18a8-c4f6-4914-9f09-2750e1fb6a3a",
-          "body": "{\n  \"userId\": \"{{ faker 'number.int' min=10000 max=100000 }}\",\n  \"firstname\": \"{{ faker 'person.firstName' }}\",\n  \"lastname\": \"{{ faker 'person.lastName' }}\"\n}",
+          "uuid": "bc5f8f7c-78c3-417e-9ba2-7a9598daa8e7",
+          "body": "{\n    \"id\": {{faker 'number.int' max=99999}},\n    \"title\": \"{{oneOf (array 'Contract review' 'VAT compliance' 'ZTAR account status' 'MVNA onboarding checklist' 'PEAK data eligibility' 'Entity verification' 'Registration update')}}\",\n    \"comment\": \"{{oneOf (array 'Pending legal teams confirmation if current MVNA contracts under ZTAR are valid for PEAK Data onboarding.' 'Awaiting response from finance team (Sashidhar/John) regarding VAT registration eligibility under ZTAR for PEAK Data.' 'Need confirmation from John/Sashidhar if ZTAR account setup meets PEAKs MVNA qualification criteria.' 'Review pending with Sashidhar on whether all onboarding items, including tax documents under ZTAR, are complete for PEAK.' 'Awaiting validation from John if current ZTAR setup fulfills the PEAK Data compliance requirements.' 'Pending internal confirmation from Sashidhar on whether ZTAR qualifies as a valid entity for PEAK as MVNA.' 'Follow-up required with John/Sashidhar to confirm if latest TAX registrations under ZTAR are aligned with PEAK onboarding needs')}}\",\n    \"status\": \"{{faker 'helpers.arrayElement' (array 'Completed' 'Resolution Required' 'In Progress' 'Awaiting completion' 'Pending')}}\",\n    \"updatedDate\": \"{{faker 'date.recent' 365}}\",\n    \"updatedBy\": \"{{faker 'person.firstName'}}\",\n    \"createdDate\": \"{{faker 'date.recent' 365}}\",\n    \"createdBy\": \"{{faker 'person.firstName'}}\"\n}",
           "latency": 0,
           "statusCode": 200,
-          "label": "",
-          "headers": [],
+          "label": "The Orchestration Task Comment",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
           "bodyType": "INLINE",
           "filePath": "",
           "databucketID": "",
-          "sendFileAsBody": true,
+          "sendFileAsBody": false,
           "rules": [],
           "rulesOperator": "OR",
           "disableTemplating": false,
@@ -438,12 +268,17 @@
           "callbacks": []
         },
         {
-          "uuid": "eef68fca-c575-4569-b5d1-7acca88b44c4",
-          "body": "{\n  \"message\": \"Hello Super User\"\n}",
+          "uuid": "2b76aec3-5d85-41cc-9424-49a6239cecda",
+          "body": "",
           "latency": 0,
-          "statusCode": 200,
-          "label": "",
-          "headers": [],
+          "statusCode": 404,
+          "label": "Orchestration Task Comment not found",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
           "bodyType": "INLINE",
           "filePath": "",
           "databucketID": "",
@@ -458,42 +293,202 @@
         }
       ],
       "responseMode": null,
-      "streamingMode": "UNICAST",
-      "streamingInterval": 100
+      "streamingMode": null,
+      "streamingInterval": 0
+    },
+    {
+      "uuid": "9617dedf-8329-4374-b485-44e8eb0821c3",
+      "type": "http",
+      "documentation": "Update a Orchestration Task Comment by ID",
+      "method": "patch",
+      "endpoint": "task/comments/:id",
+      "responses": [
+        {
+          "uuid": "9f632d3f-fd5a-4d5d-87cb-7ad5b40822ab",
+          "body": "",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Orchestration Task Comment updated successfully",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "773564cf-a254-447c-961c-6e4e7f2889be",
+          "body": "",
+          "latency": 0,
+          "statusCode": 404,
+          "label": "Orchestration Task Comments item not found",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    },
+    {
+      "uuid": "86b6b2f8-424c-47b0-ad16-201365c31ecc",
+      "type": "http",
+      "documentation": "Delete a Orchestration Task Comments item by ID",
+      "method": "delete",
+      "endpoint": "task/comments/:id",
+      "responses": [
+        {
+          "uuid": "66f70a82-c4ca-466a-bf56-cab8b7c044a8",
+          "body": "",
+          "latency": 0,
+          "statusCode": 204,
+          "label": "Orchestration Task Comments item deleted successfully",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "bdb4126e-03a3-415f-82ef-353deca7299b",
+          "body": "",
+          "latency": 0,
+          "statusCode": 404,
+          "label": "Orchestration Task Comments item not found",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    },
+    {
+      "uuid": "331186b2-57f5-4dfd-986d-6e7d73bf9cdc",
+      "type": "http",
+      "documentation": "Get all Orchestration Task Audit Trails",
+      "method": "get",
+      "endpoint": "task/:id/audit-trail",
+      "responses": [
+        {
+          "uuid": "a1625468-a64d-4930-91b1-fec3ad903302",
+          "body": "[\n   {{#repeat 5 20}}\n  {\n    \"id\": {{faker 'number.int' max=99999}},\n    \"field\": \"{{oneOf (array 'Department Code' 'Employee Id' 'Project Code' 'Location Code' 'Approval Status')}}\",\n    \"previousValue\": \"{{oneOf (array 'Resolution Required' 'In Progress' 'Awaiting completion' 'Pending')}}\",\n    \"newValue\": \"{{oneOf (array 'Resolved' 'Completed' 'Closed' 'Tested')}}\",\n    \"updatedDate\": \"{{faker 'date.recent' 365}}\",\n    \"updatedBy\": \"{{faker 'person.firstName'}}\"\n  }\n  {{/repeat}}\n]",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "A list of Orchestration Task Audit Trails",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
     }
   ],
   "rootChildren": [
     {
       "type": "route",
-      "uuid": "89c3ffc2-d614-4ac1-aa2c-4d0130318f9f"
+      "uuid": "d4625431-6be2-48db-8e8f-efc0adc36e56"
     },
     {
       "type": "route",
-      "uuid": "8f2348c0-8a1a-4725-9056-0499af7f1e6f"
+      "uuid": "42b2d00e-7779-4f20-9c42-1add9ad959d2"
     },
     {
       "type": "route",
-      "uuid": "87f1f4e4-7bf6-4af5-bbb8-252febf5abae"
+      "uuid": "e7fd1eb4-f4ed-4e06-9b45-7e45df088e91"
     },
     {
       "type": "route",
-      "uuid": "8c458e31-3785-4be9-8c6a-9f0d4a110c43"
+      "uuid": "e6b96779-348f-4ca9-a385-3c0ff5ddea69"
     },
     {
       "type": "route",
-      "uuid": "1da3b9f2-d40d-49ea-8d02-62e3e72a8eea"
+      "uuid": "339e0b19-863c-47b4-a4dc-a06eb9a0b93b"
     },
     {
       "type": "route",
-      "uuid": "26b90140-bcef-4bee-a116-c377c5757e0a"
+      "uuid": "2f76c0a4-6896-4c3c-b81e-1626c39659c9"
     },
     {
       "type": "route",
-      "uuid": "db28285c-de87-45aa-934a-0047d068e3a8"
+      "uuid": "9617dedf-8329-4374-b485-44e8eb0821c3"
     },
     {
       "type": "route",
-      "uuid": "1b5ac7ee-72a8-46fc-b544-bb537fa6f32b"
+      "uuid": "86b6b2f8-424c-47b0-ad16-201365c31ecc"
+    },
+    {
+      "type": "route",
+      "uuid": "331186b2-57f5-4dfd-986d-6e7d73bf9cdc"
     }
   ],
   "proxyMode": false,
@@ -510,10 +505,6 @@
   },
   "cors": true,
   "headers": [
-    {
-      "key": "Content-Type",
-      "value": "application/json"
-    },
     {
       "key": "Access-Control-Allow-Origin",
       "value": "*"
